@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تایید ایمیل | Mosaic Admin</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-theme="dark">
+
+<div class="login-screen">
+  <button class="icon-btn" onclick="toggleLang()" id="lang-btn" style="position:absolute; top:20px; left:20px; font-family:var(--font-mono); font-size:11px; font-weight:700;">EN</button>
+  <button class="icon-btn" onclick="toggleBrand()" id="brand-btn" title="رنگ: دلتیز" style="position:absolute; top:20px; left:68px;">◆</button>
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="brand-mark" style="width:46px;height:46px;"></div>
+      <div class="login-title">تایید آدرس ایمیل</div>
+      <div class="login-sub">کد ۵ رقمی ارسال‌شده به ایمیل شما را وارد کنید<br><span id="masked-email" style="color:var(--fg);">y•••@example.com</span></div>
+    </div>
+    <form id="otp-form">
+      <div class="otp-row">
+        <input class="otp-box" maxlength="1" inputmode="numeric">
+        <input class="otp-box" maxlength="1" inputmode="numeric">
+        <input class="otp-box" maxlength="1" inputmode="numeric">
+        <input class="otp-box" maxlength="1" inputmode="numeric">
+        <input class="otp-box" maxlength="1" inputmode="numeric">
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%; padding:11px;">تایید و ورود</button>
+    </form>
+    <div style="text-align:center; font-size:12.5px; color:var(--fg-low); margin-top:20px;">
+      کدی دریافت نکردید؟ <a href="#" id="resend-link" style="color:var(--accent); text-decoration:none;">ارسال مجدد</a>
+    </div>
+  </div>
+</div>
+
+<script src="../js/script.js"></script>
+<script>
+  // Auto-advance between OTP boxes
+  const boxes = document.querySelectorAll('.otp-box');
+  boxes.forEach((box, i)=>{
+    box.addEventListener('input', ()=>{
+      box.value = box.value.replace(/[^0-9]/g,'');
+      if(box.value && boxes[i+1]) boxes[i+1].focus();
+    });
+    box.addEventListener('keydown', (e)=>{
+      if(e.key === 'Backspace' && !box.value && boxes[i-1]) boxes[i-1].focus();
+    });
+  });
+  const resend = document.getElementById('resend-link');
+  if(resend){
+    resend.addEventListener('click', (e)=>{
+      e.preventDefault();
+      showToast('کد جدید ارسال شد', 'success');
+    });
+  }
+  const otpForm = document.getElementById('otp-form');
+  if(otpForm){
+    otpForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const code = Array.from(boxes).map(b=>b.value).join('');
+      if(code.length < 5){
+        showToast('لطفاً کد کامل را وارد کنید', 'danger');
+        return;
+      }
+      showToast('ایمیل با موفقیت تایید شد', 'success');
+      setTimeout(()=> window.location.href = '../index.html', 600);
+    });
+  }
+</script>
+</body>
+</html>

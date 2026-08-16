@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دسترسی غیرمجاز | Mosaic Admin</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-theme="dark">
+<button class="icon-btn" onclick="toggleLang()" id="lang-btn" style="position:absolute; top:20px; left:20px; font-family:var(--font-mono); font-size:11px; font-weight:700;">EN</button>
+<button class="icon-btn" onclick="toggleBrand()" id="brand-btn" title="رنگ: دلتیز" style="position:absolute; top:20px; left:68px;">◆</button>
+
+<div class="result-shell">
+  <div class="result-card">
+    <div class="result-icon danger" style="font-family:var(--font-mono); font-size:22px;">403</div>
+    <div class="result-title">دسترسی شما مجاز نیست</div>
+    <div class="result-sub">شما اجازه‌ی مشاهده‌ی این بخش را ندارید. اگر فکر می‌کنید این یک اشتباه است، با مدیر سیستم تماس بگیرید.</div>
+    <div class="result-actions">
+      <a href="../index.html" class="btn-primary" style="text-decoration:none; text-align:center; padding:11px; border-radius:10px; display:block;">بازگشت به داشبورد</a>
+      <a href="../auth/login.html" class="btn-ghost" style="text-decoration:none; text-align:center; padding:11px; border-radius:10px; display:block;">ورود با حساب دیگر</a>
+    </div>
+  </div>
+</div>
+
+<script src="../js/script.js"></script>
+</body>
+</html>

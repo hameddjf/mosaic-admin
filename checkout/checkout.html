@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسویه حساب | Mosaic Admin</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-theme="dark">
+
+<div class="checkout-shell">
+  <div class="checkout-topbar">
+    <div class="checkout-brand"><div class="brand-mark"></div>پنل موزاییک</div>
+    <div style="display:flex; gap:10px;">
+      <button class="icon-btn" onclick="toggleLang()" id="lang-btn" style="font-family:var(--font-mono); font-size:11px; font-weight:700;">EN</button>
+      <button class="icon-btn" onclick="toggleBrand()" id="brand-btn" title="رنگ: دلتیز">◆</button>
+      <button class="icon-btn" onclick="toggleTheme()" id="theme-btn">🌙</button>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step done"><div class="step-dot">✓</div><div class="step-label">سبد خرید</div></div>
+    <div class="step-line done"></div>
+    <div class="step active"><div class="step-dot">۲</div><div class="step-label">اطلاعات ارسال</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-dot">۳</div><div class="step-label">پرداخت</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-dot">۴</div><div class="step-label">تایید نهایی</div></div>
+  </div>
+
+  <div class="checkout-layout">
+    <div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="panel-head"><h3>اطلاعات ارسال</h3></div>
+        <div class="form-grid">
+          <div class="field"><label>نام و نام خانوادگی</label><input type="text" value="سارا احمدی"></div>
+          <div class="field"><label>شماره تماس</label><input type="text" value="۰۹۱۲۱۲۳۴۵۶۷"></div>
+          <div class="field full"><label>آدرس کامل</label><input type="text" value="تهران، خیابان ولیعصر، کوچه بهار، پلاک ۱۲"></div>
+          <div class="field"><label>استان</label><select><option>تهران</option><option>اصفهان</option><option>فارس</option></select></div>
+          <div class="field"><label>کد پستی</label><input type="text" value="۱۴۵۶۷۸۹۰۱۲"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="panel-head"><h3>روش پرداخت</h3></div>
+        <div class="gateway-grid" id="gateway-grid">
+          <div class="gateway-card selected" data-gw="زرین‌پال">
+            <div class="gateway-logo">ZP</div>
+            <div><div class="gateway-name">زرین‌پال</div><div class="gateway-desc">پرداخت آنلاین با تمام کارت‌ها</div></div>
+            <div class="gateway-radio"></div>
+          </div>
+          <div class="gateway-card" data-gw="درگاه ملت">
+            <div class="gateway-logo">BM</div>
+            <div><div class="gateway-name">درگاه بانک ملت</div><div class="gateway-desc">پرداخت مستقیم بانکی</div></div>
+            <div class="gateway-radio"></div>
+          </div>
+          <div class="gateway-card" data-gw="سامان">
+            <div class="gateway-logo">SB</div>
+            <div><div class="gateway-name">درگاه بانک سامان</div><div class="gateway-desc">پرداخت مستقیم بانکی</div></div>
+            <div class="gateway-radio"></div>
+          </div>
+          <div class="gateway-card" data-gw="زیبال">
+            <div class="gateway-logo">ZB</div>
+            <div><div class="gateway-name">زیبال</div><div class="gateway-desc">پرداخت آنلاین با تمام کارت‌ها</div></div>
+            <div class="gateway-radio"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card summary-card">
+      <div class="panel-head" style="margin-bottom:14px;"><h3>خلاصه سفارش</h3></div>
+      <div class="summary-row"><span>جمع جزء <span class="mono" style="font-size:11px;">(۳ قلم)</span></span><span class="val">۵,۸۴۰,۰۰۰ <span class="curr">تومان</span></span></div>
+      <div class="summary-row"><span>هزینه ارسال</span><span class="val">رایگان</span></div>
+      <div class="summary-row total">
+        <span>مبلغ قابل پرداخت</span>
+        <span class="val">۵,۸۴۰,۰۰۰ <span class="curr">تومان</span></span>
+      </div>
+      <button class="btn-primary" style="width:100%; padding:13px; margin-top:16px;" id="pay-btn">پرداخت و تکمیل سفارش</button>
+      <a href="cart.html" style="display:block; text-align:center; font-size:12.5px; color:var(--fg-low); margin-top:14px; text-decoration:none;">بازگشت به سبد خرید</a>
+
+      <div style="margin-top:22px; padding-top:18px; border-top:1px solid var(--border); font-size:11px; color:var(--fg-low); text-align:center;">
+        برای پیش‌نمایش نتایج مختلف:
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <a href="payment-failed.html" style="flex:1; color:var(--danger); text-decoration:none; border:1px solid var(--border); border-radius:8px; padding:6px; display:block;">ناموفق</a>
+          <a href="payment-pending.html" style="flex:1; color:var(--accent); text-decoration:none; border:1px solid var(--border); border-radius:8px; padding:6px; display:block;">در انتظار</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/script.js"></script>
+<script>
+  document.querySelectorAll('.gateway-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      document.querySelectorAll('.gateway-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+    });
+  });
+  document.getElementById('pay-btn').addEventListener('click', ()=>{
+    const btn = document.getElementById('pay-btn');
+    btn.textContent = 'در حال انتقال به درگاه پرداخت...';
+    btn.disabled = true;
+    setTimeout(()=> window.location.href = 'payment-success.html', 900);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سبد خرید | Mosaic Admin</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-theme="dark">
+
+<div class="checkout-shell">
+  <div class="checkout-topbar">
+    <div class="checkout-brand"><div class="brand-mark"></div>پنل موزاییک</div>
+    <div style="display:flex; gap:10px;">
+      <button class="icon-btn" onclick="toggleLang(); if(typeof renderCartItems==='function') renderCartItems();" id="lang-btn" style="font-family:var(--font-mono); font-size:11px; font-weight:700;">EN</button>
+      <button class="icon-btn" onclick="toggleBrand()" id="brand-btn" title="رنگ: دلتیز">◆</button>
+      <button class="icon-btn" onclick="toggleTheme()" id="theme-btn">🌙</button>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step active"><div class="step-dot">۱</div><div class="step-label">سبد خرید</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-dot">۲</div><div class="step-label">اطلاعات ارسال</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-dot">۳</div><div class="step-label">پرداخت</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-dot">۴</div><div class="step-label">تایید نهایی</div></div>
+  </div>
+
+  <div class="checkout-layout">
+    <div class="card">
+      <div class="panel-head">
+        <h3>سبد خرید شما</h3>
+        <span class="muted" id="cart-item-count">۳ کالا</span>
+      </div>
+      <div id="cart-items-wrap"></div>
+    </div>
+
+    <div class="card summary-card">
+      <div class="panel-head" style="margin-bottom:14px;"><h3>خلاصه سفارش</h3></div>
+      <div id="summary-rows"></div>
+
+      <div class="promo-row">
+        <input type="text" id="promo-input" placeholder="کد تخفیف را وارد کنید">
+        <button class="btn-ghost" id="promo-btn" style="white-space:nowrap;">اعمال کد</button>
+      </div>
+      <div id="promo-status"></div>
+
+      <div class="summary-row total" style="margin-top:16px;">
+        <span>مبلغ قابل پرداخت</span>
+        <span class="val" id="grand-total">۶,۴۲۰,۰۰۰ تومان</span>
+      </div>
+
+      <a href="checkout.html" class="btn-primary" style="display:block; text-align:center; width:100%; padding:13px; margin-top:16px; text-decoration:none;">ادامه فرآیند خرید ←</a>
+      <a href="../index.html" style="display:block; text-align:center; font-size:12.5px; color:var(--fg-low); margin-top:14px; text-decoration:none;">بازگشت به فروشگاه</a>
+    </div>
+  </div>
+
+  <div class="trust-strip">
+    <div class="trust-item"><span class="ic">🔒</span> پرداخت ۱۰۰٪ امن</div>
+    <div class="trust-item"><span class="ic">↩</span> ۷ روز ضمانت بازگشت وجه</div>
+    <div class="trust-item"><span class="ic">🚚</span> ارسال ۲ تا ۴ روزه</div>
+    <div class="trust-item"><span class="ic">🛡</span> ضمانت اصالت کالا</div>
+  </div>
+</div>
+
+<script src="../js/script.js"></script>
+<script>
+  const CART_ITEMS = [
+    {id:1, name:'کیف چرم دستی مدل بارین', meta:'رنگ: قهوه‌ای تیره / سایز: متوسط', price:2450000, old:null, qty:1, icon:'👜'},
+    {id:2, name:'کفش اسپرت مدل آترا', meta:'سایز: ۴۲ / رنگ: مشکی', price:1890000, old:2200000, qty:1, icon:'👟'},
+    {id:3, name:'کمربند چرم طبیعی', meta:'رنگ: قهوه‌ای', price:750000, old:null, qty:2, icon:'➰'},
+  ];
+  let PROMO_APPLIED = false;
+
+  function faNum(n){ return n.toLocaleString('fa-IR'); }
+  function fmtNum(n){ return currentLang() === 'en' ? n.toLocaleString('en-US') : faNum(n); }
+  function currWord(){ return currentLang() === 'en' ? 'Toman' : 'تومان'; }
+  function currAbbr(){ return currentLang() === 'en' ? 'T' : 'ت'; }
+  function itemsWord(){ return currentLang() === 'en' ? 'items' : 'کالا'; }
+
+  function renderCartItems(){
+    const wrap = document.getElementById('cart-items-wrap');
+    if(CART_ITEMS.length === 0){
+      wrap.innerHTML = `<div class="cart-empty"><div class="ic">🛒</div><div>${currentLang()==='en' ? 'Your cart is empty' : 'سبد خرید شما خالی است'}</div></div>`;
+      document.getElementById('cart-item-count').textContent = `${fmtNum(0)} ${itemsWord()}`;
+      renderSummary();
+      return;
+    }
+    wrap.innerHTML = CART_ITEMS.map(it => `
+      <div class="cart-item" data-id="${it.id}">
+        <div class="cart-thumb">${it.icon}</div>
+        <div class="cart-item-body">
+          <div class="cart-item-name">${it.name}</div>
+          <div class="cart-item-meta">${it.meta}</div>
+        </div>
+        <div class="cart-qty">
+          <button data-dec="${it.id}">−</button>
+          <span>${it.qty}</span>
+          <button data-inc="${it.id}">+</button>
+        </div>
+        <div style="text-align:left; min-width:110px;">
+          <div class="cart-item-price">${fmtNum(it.price * it.qty)} ${currAbbr()}</div>
+          ${it.old ? `<div class="cart-item-old">${fmtNum(it.old * it.qty)}</div>` : ''}
+        </div>
+        <button class="cart-item-remove" data-remove="${it.id}">✕</button>
+      </div>`).join('');
+    document.getElementById('cart-item-count').textContent = `${fmtNum(CART_ITEMS.reduce((s,i)=>s+i.qty,0))} ${itemsWord()}`;
+
+    wrap.querySelectorAll('[data-inc]').forEach(b => b.addEventListener('click', ()=> changeQty(parseInt(b.dataset.inc,10), 1)));
+    wrap.querySelectorAll('[data-dec]').forEach(b => b.addEventListener('click', ()=> changeQty(parseInt(b.dataset.dec,10), -1)));
+    wrap.querySelectorAll('[data-remove]').forEach(b => b.addEventListener('click', ()=> removeItem(parseInt(b.dataset.remove,10))));
+    translateLeafNodes(wrap, currentLang());
+    renderSummary();
+  }
+
+  function changeQty(id, delta){
+    const item = CART_ITEMS.find(i => i.id === id);
+    if(!item) return;
+    item.qty += delta;
+    if(item.qty <= 0){ removeItem(id); return; }
+    renderCartItems();
+  }
+  function removeItem(id){
+    CART_ITEMS.splice(CART_ITEMS.findIndex(i => i.id === id), 1);
+    renderCartItems();
+    showToast('کالا از سبد خرید حذف شد', 'danger');
+  }
+
+  function renderSummary(){
+    const subtotal = CART_ITEMS.reduce((s,i)=> s + i.price * i.qty, 0);
+    const shipping = subtotal > 2000000 || subtotal === 0 ? 0 : 250000;
+    const discount = PROMO_APPLIED ? Math.round(subtotal * 0.1) : 0;
+    const total = subtotal - discount + shipping;
+    const en = currentLang() === 'en';
+
+    document.getElementById('summary-rows').innerHTML = `
+      <div class="summary-row"><span>${en ? 'Subtotal' : 'جمع جزء'} <span class="mono" style="font-size:11px;">(${fmtNum(CART_ITEMS.length)} ${en ? 'items' : 'قلم'})</span></span><span class="val">${fmtNum(subtotal)} ${currAbbr()}</span></div>
+      ${discount > 0 ? `<div class="summary-row"><span>${en ? 'Discount (RIVAN10)' : 'تخفیف کد RIVAN10'}</span><span class="val discount">−${fmtNum(discount)} ${currAbbr()}</span></div>` : ''}
+      <div class="summary-row"><span>${en ? 'Shipping' : 'هزینه ارسال'}</span><span class="val">${shipping === 0 ? (en ? 'Free' : 'رایگان') : fmtNum(shipping) + ' ' + currAbbr()}</span></div>
+    `;
+    document.getElementById('grand-total').textContent = `${fmtNum(total)} ${currWord()}`;
+  }
+
+  document.getElementById('promo-btn').addEventListener('click', ()=>{
+    const val = document.getElementById('promo-input').value.trim();
+    if(!val){ showToast('لطفاً کد تخفیف را وارد کنید', 'danger'); return; }
+    PROMO_APPLIED = true;
+    document.getElementById('promo-status').innerHTML = `<div class="promo-applied"><span>کد «${val}» با موفقیت اعمال شد (۱۰٪ تخفیف)</span><span>✓</span></div>`;
+    renderSummary();
+    showToast('کد تخفیف اعمال شد', 'success');
+  });
+
+  renderCartItems();
+</script>
+</body>
+</html>

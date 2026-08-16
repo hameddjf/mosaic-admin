@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ورود | Mosaic Admin</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+<body data-theme="dark">
+
+<div class="login-screen">
+  <button class="icon-btn" onclick="toggleLang()" id="lang-btn" style="position:absolute; top:20px; left:20px; font-family:var(--font-mono); font-size:11px; font-weight:700;">EN</button>
+  <button class="icon-btn" onclick="toggleBrand()" id="brand-btn" title="رنگ: دلتیز" style="position:absolute; top:20px; left:68px;">◆</button>
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="brand-mark" style="width:46px;height:46px;"></div>
+      <div class="login-title">ورود به پنل مدیریت</div>
+      <div class="login-sub">برای دسترسی به داشبورد، وارد حساب کاربری خود شوید</div>
+    </div>
+    <form id="login-form">
+      <div class="field">
+        <label>ایمیل یا نام کاربری</label>
+        <input type="text" placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label>رمز عبور</label>
+        <input type="password" placeholder="••••••••">
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin:4px 0 20px; font-size:12px;">
+        <label style="display:flex; align-items:center; gap:6px; color:var(--fg-mid); font-weight:400;">
+          <input type="checkbox" style="width:auto;"> مرا به خاطر بسپار
+        </label>
+        <a href="forgot-password.html" style="color:var(--accent); text-decoration:none;">فراموشی رمز عبور؟</a>
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%; padding:11px;">ورود</button>
+    </form>
+    <div style="text-align:center; font-size:12.5px; color:var(--fg-low); margin-top:20px;">
+      حساب کاربری ندارید؟ <a href="register.html" style="color:var(--accent); text-decoration:none;">ثبت‌نام کنید</a>
+    </div>
+  </div>
+</div>
+
+<script src="../js/script.js"></script>
+</body>
+</html>
